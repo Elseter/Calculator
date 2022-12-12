@@ -2,12 +2,22 @@ package example.javafxprojects;
 
 import javafx.scene.control.Label;
 
+import java.math.BigDecimal;
+
 public class CalcRVK {
     private String currentValue = "";
     private int currentInt = 0;
     private int storedInt;
     private double currentDub = 0.0;
-    private double storedDub;
+     double storedDub;
+
+    String operator = "";
+
+    private final Label label;
+
+    public CalcRVK(Label label){
+        this.label = label;
+    }
 
     //-------------------------------------------------
     // Methods to alter the display string
@@ -30,18 +40,59 @@ public class CalcRVK {
             currentInt = Integer.parseInt(currentValue);
         }
     }
-    public void displayCurrentDisplay(Label label){
-        label.setText(currentValue);
+    public void displayCurrentDisplay(){
+        this.label.setText(currentValue);
     }
-    public void reset(String value) {
-        currentValue = value;
+    public void resetVisible(){
+        currentValue = "";
         currentInt = 0;
         currentDub = 0.0;
     }
+    public void resetVisible(String value, String label) {
+        currentValue = value;
+        this.label.setText(label);
+        currentInt = 0;
+        currentDub = 0.0;
+
+    }
     //-------------------------------------------------
     // Setter Functions
-    public void setStored(int value){storedInt = value;}
-    public void setStored(double value){storedDub = value;}
+    public void setOperator(String op){
+        this.operator = op;
+    }
+    public void setStored(){
+        try{
+            storedInt = Integer.parseInt(currentValue);
+            storedDub = storedInt;
+        }
+        catch (NumberFormatException e){
+            if (currentValue.equals("")) {
+                storedInt = 0;
+                storedDub = 0.0;
+            }
+            else {
+                storedDub = Double.parseDouble(currentValue);
+                storedInt = 0;
+            }
+        }
+        System.out.println(storedDub);
+        System.out.println(storedInt);
+
+    }
+    public void getCurrent() {
+        try {
+            currentInt = Integer.parseInt(currentValue);
+            currentDub = currentInt;
+        } catch (NumberFormatException e) {
+            if (currentValue.equals("")) {
+                currentInt = 0;
+                currentDub = 0.0;
+            } else {
+                currentDub = Double.parseDouble(currentValue);
+                currentInt = 0;
+            }
+        }
+    }
 
     //-------------------------------------------------
     // Math Functions
@@ -54,10 +105,29 @@ public class CalcRVK {
             double workVal = Double.parseDouble(currentValue);
             currentDub = workVal / 1000.0;
         }
-
-
+        currentValue = String.valueOf(BigDecimal.valueOf(currentDub));
+        displayCurrentDisplay();
+    }
+    public void addition(){
+        storedDub = currentDub + storedDub;
+        currentValue = String.valueOf(storedDub);
+        currentDub = storedDub;
+    }
+    public void subtraction(){
+        storedDub = storedDub - currentDub;
+        currentValue = String.valueOf(storedDub);
+        currentDub = storedDub;
     }
     public void multiplication(){
-
+        storedDub = currentDub * storedDub;
+        currentValue = String.valueOf(storedDub);
+        currentDub = storedDub;
     }
+    public void division(){
+        storedDub = storedDub / currentDub;
+        currentValue = String.valueOf(storedDub);
+        currentDub = storedDub;
+    }
+
+
 }

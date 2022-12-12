@@ -27,6 +27,7 @@ public class CalcControlRVK extends Application {
     private double xOffset = 0;
     private double yOffset = 0;
 
+
     public Pane creatButtons(String s1){
         Pane button = new Pane();
         button.setId(s1);
@@ -51,42 +52,70 @@ public class CalcControlRVK extends Application {
             }
         });
     }
-    public void addPressListenerNUMPAD(Pane button, CalcRVK calc, Label label) {
+    public void addPressListenerNUMPAD(Pane button, CalcRVK calc) {
         button.setOnMouseClicked(mouseEvent -> {
             String value = button.getId().replaceAll("button", "");
-            System.out.println(value);
             switch (value) {
                 case "DOT" -> calc.appendCurrentDisplay(".");
                 case "+/-" -> {
                     calc.appendCurrentDisplay("-");
-                    calc.displayCurrentDisplay(label);
+                    calc.displayCurrentDisplay();
                 }
                 default -> {
                     calc.appendCurrentDisplay(value);
-                    calc.displayCurrentDisplay(label);
+                    calc.displayCurrentDisplay();
                 }
             }
         });
     }
-    public void addClearListener(Pane button, CalcRVK calc, Label label){
+    public void addClearListener(Pane button, CalcRVK calc){
         button.setOnMouseClicked(mouseEvent -> {
-            calc.reset("");
-            label.setText("0.0");
+            calc.resetVisible("", "0.0");
+            calc.setOperator(".");
         });
     }
     public void addActionListener(Pane button, CalcRVK calc){
         button.setOnMouseClicked(mouseEvent -> {
             String value = button.getId().replaceAll("button", "");
-            System.out.println(value);
             switch (value){
-                case"%" ->{
-
+                case"%" -> calc.modulus();
+                case"=" ->{
+                    calc.getCurrent();
+                    switch(calc.operator){
+                        case "+" -> calc.addition();
+                        case "-" -> calc.subtraction();
+                        case "*" -> calc.multiplication();
+                        case "/" ->calc.division();
+                    }
+                    calc.displayCurrentDisplay();
+                    calc.setOperator(".");
                 }
-                case"÷" ->{}
-                case"×" ->{}
-                case"-" ->{}
-                case"+" ->{}
-                case"=" ->{}
+                case"÷" -> {
+                    calc.setOperator("÷");
+                    calc.setStored();
+                    calc.resetVisible();
+                    button.setStyle("-fx-background-color: #00000075;" +
+                            "-fx-background-radius: 20;");
+                }
+                case"×" ->{
+                    calc.setOperator("×");
+                    calc.setStored();
+                    calc.resetVisible();
+                    button.setStyle("-fx-background-color: #00000075;" +
+                            "-fx-background-radius: 20;");
+                }
+                case"-" ->{
+                    calc.setOperator("-");
+                    calc.setStored();
+                    calc.resetVisible();
+                    button.setStyle("-fx-background-color: #00000075;" +
+                            "-fx-background-radius: 20;");}
+                case"+" ->{
+                    calc.setOperator("+");
+                    calc.setStored();
+                    calc.resetVisible();
+                    button.setStyle("-fx-background-color: #00000075;" +
+                            "-fx-background-radius: 20;");}
                 default -> System.out.println("If you got here, you got issue");
 
             }
@@ -95,8 +124,6 @@ public class CalcControlRVK extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
-        CalcRVK calculator = new CalcRVK();
 
         //----------------------------------------------------------------------------
         // Setting Background and Colors
@@ -217,6 +244,7 @@ public class CalcControlRVK extends Application {
         displayText.setContentDisplay(ContentDisplay.LEFT);
         textPane.getChildren().add(displayText);
 
+        CalcRVK calculator = new CalcRVK(displayText);
         //----------------------------------------------------------------------------
         // add GridPane to background pane and start to place panes on it which will later act as buttons
 
@@ -240,12 +268,12 @@ public class CalcControlRVK extends Application {
         Pane buttonC = creatButtons("C");
         buttonPane.add(buttonC, 0,0);
         addHoverListener(buttonC);
-        addClearListener(buttonC, calculator, displayText);
+        addClearListener(buttonC, calculator);
 
         Pane buttonINV = creatButtons("+/-");
         buttonPane.add(buttonINV, 1, 0);
         addHoverListener(buttonINV);
-        addPressListenerNUMPAD(buttonINV, calculator, displayText);
+        addPressListenerNUMPAD(buttonINV, calculator);
 
         Pane buttonMOD = creatButtons("%");
         buttonPane.add(buttonMOD, 2, 0);
@@ -260,17 +288,17 @@ public class CalcControlRVK extends Application {
         Pane button7 = creatButtons("7");
         buttonPane.add(button7, 0, 1);
         addHoverListener(button7);
-        addPressListenerNUMPAD(button7, calculator, displayText);
+        addPressListenerNUMPAD(button7, calculator);
 
         Pane button8 = creatButtons("8");
         buttonPane.add(button8, 1, 1);
         addHoverListener(button8);
-        addPressListenerNUMPAD(button8, calculator, displayText);
+        addPressListenerNUMPAD(button8, calculator);
 
         Pane button9 = creatButtons("9");
         buttonPane.add(button9, 2, 1);
         addHoverListener(button9);
-        addPressListenerNUMPAD(button9, calculator, displayText);
+        addPressListenerNUMPAD(button9, calculator);
 
         Pane buttonMULT = creatButtons("×");
         buttonPane.add(buttonMULT, 3, 1);
@@ -280,17 +308,17 @@ public class CalcControlRVK extends Application {
         Pane button4 = creatButtons("4");
         buttonPane.add(button4, 0, 2);
         addHoverListener(button4);
-        addPressListenerNUMPAD(button4, calculator, displayText);
+        addPressListenerNUMPAD(button4, calculator);
 
         Pane button5 = creatButtons("5");
         buttonPane.add(button5, 1, 2);
         addHoverListener(button5);
-        addPressListenerNUMPAD(button5, calculator, displayText);
+        addPressListenerNUMPAD(button5, calculator);
 
         Pane button6 = creatButtons("6");
         buttonPane.add(button6, 2, 2);
         addHoverListener(button6);
-        addPressListenerNUMPAD(button6, calculator, displayText);
+        addPressListenerNUMPAD(button6, calculator);
 
         Pane buttonMIN = creatButtons("-");
         buttonPane.add(buttonMIN, 3, 2);
@@ -300,17 +328,17 @@ public class CalcControlRVK extends Application {
         Pane button1 = creatButtons("1");
         buttonPane.add(button1, 0, 3);
         addHoverListener(button1);
-        addPressListenerNUMPAD(button1, calculator, displayText);
+        addPressListenerNUMPAD(button1, calculator);
 
         Pane button2 = creatButtons("2");
         buttonPane.add(button2, 1, 3);
         addHoverListener(button2);
-        addPressListenerNUMPAD(button2, calculator, displayText);
+        addPressListenerNUMPAD(button2, calculator);
 
         Pane button3 = creatButtons("3");
         buttonPane.add(button3, 2, 3);
         addHoverListener(button3);
-        addPressListenerNUMPAD(button3, calculator, displayText);
+        addPressListenerNUMPAD(button3, calculator);
 
         Pane buttonADD = creatButtons("+");
         buttonPane.add(buttonADD, 3, 3);
@@ -329,12 +357,12 @@ public class CalcControlRVK extends Application {
         button0.getChildren().add(buttonLabel0);
         buttonPaneBott.add(button0, 0, 0);
         addHoverListener(button0);
-        addPressListenerNUMPAD(button0, calculator, displayText);
+        addPressListenerNUMPAD(button0, calculator);
 
         Pane buttonDOT = creatButtons(".");
         buttonPaneBott.add(buttonDOT, 1, 0);
         addHoverListener(buttonDOT);
-        addPressListenerNUMPAD(buttonDOT, calculator, displayText);
+        addPressListenerNUMPAD(buttonDOT, calculator);
 
         Pane buttonEQU = creatButtons("=");
         buttonPaneBott.add(buttonEQU, 2, 0);
