@@ -224,6 +224,13 @@ public class CalcControlRVK extends Application {
         //----------------------------------------------------------------------------
         // textPane Pane and Adaptive Label for displaying input
 
+        // Necessary UGLY code for name
+        Label displayName = new Label("     Riley King - Calculator");
+        displayName.setAlignment(Pos.BASELINE_CENTER);
+        displayName.setTextFill(Color.WHITE);
+        displayName.setFont(Font.font("arial", 12));
+
+
         // textPane
         Pane textPane = new Pane();
         textPane.setStyle("-fx-background-color: #00000025;" +
@@ -261,7 +268,7 @@ public class CalcControlRVK extends Application {
         buttonPaneBott.setPadding(new Insets(10, 20, 50, 20));
         buttonPaneBott.setHgap(10);
 
-
+        buttonPaneBott.add(displayName, 0, 2);
         //----------------------------------------------------------------------------
         // ALL PANES THAT WILL ACT AS BUTTONS
 
