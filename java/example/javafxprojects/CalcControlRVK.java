@@ -84,8 +84,8 @@ public class CalcControlRVK extends Application {
                     switch(calc.operator){
                         case "+" -> calc.addition();
                         case "-" -> calc.subtraction();
-                        case "*" -> calc.multiplication();
-                        case "/" ->calc.division();
+                        case "×" -> calc.multiplication();
+                        case "÷" ->calc.division();
                     }
                     calc.displayCurrentDisplay();
                     calc.setOperator(".");

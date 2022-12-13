@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 public class CalcRVK {
     private String currentValue = "";
     private int currentInt = 0;
-    private int storedInt;
     private double currentDub = 0.0;
      double storedDub;
 
@@ -61,6 +60,7 @@ public class CalcRVK {
         this.operator = op;
     }
     public void setStored(){
+        int storedInt;
         try{
             storedInt = Integer.parseInt(currentValue);
             storedDub = storedInt;
@@ -119,11 +119,13 @@ public class CalcRVK {
         currentDub = storedDub;
     }
     public void multiplication(){
+        System.out.println(currentDub + "*" + storedDub);
         storedDub = currentDub * storedDub;
         currentValue = String.valueOf(storedDub);
         currentDub = storedDub;
     }
     public void division(){
+        System.out.println(storedDub + "/" + currentDub);
         storedDub = storedDub / currentDub;
         currentValue = String.valueOf(storedDub);
         currentDub = storedDub;
